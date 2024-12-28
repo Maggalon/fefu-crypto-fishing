@@ -1,4 +1,3 @@
-import { getReferrals, getReferrer, saveReferral } from "@/lib/storage";
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { generateUniqueCode } from "@/lib/utils";

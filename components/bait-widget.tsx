@@ -152,7 +152,7 @@ export default function BaitDisplay({
     // }
   
     return (
-        <div className='flex flex-col w-full max-w-lg justify-center items-center'>
+        <div className='flex flex-col w-full max-w-lg justify-center items-center gap-10 mt-10'>
             <HexGrid width={"100%"} height={"100%"}>
                 <Layout size={{ x: 3, y: 3 }} spacing={1.3}>
                     { grid.map(({ id, item, isActive, content }, i) => {
@@ -169,7 +169,7 @@ export default function BaitDisplay({
                                     q={item.q} r={item.r} s={item.s} /> )})}
                 </Layout>
             </HexGrid>
-            <div className="w-full max-w-lg flex justify-center gap-2 items-center bg-white/10 rounded-full shadow-2xl p-3 mt-10">
+            <div className="w-full max-w-lg flex justify-center gap-2 items-center bg-white/10 rounded-full shadow-2xl p-3">
                 <div className="text-sm text-white tracking-wide">НАЖИВКА</div>
                 <div className="w-full border-2 rounded-full h-3">
                     <div className="bg-white/80 h-full rounded-full" style={{ width: `${bait/maxBait*100}%` }}></div>

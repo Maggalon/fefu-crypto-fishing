@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234.75 311.16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #626890;
+        stroke-width: 0px;
+      }
+    </style>
+  </defs>
+  <g id="_Слой_1-2" data-name="Слой 1">
+    <g>
+      <rect class="cls-1" x="-13.97" y="204.67" width="262.69" height="54.45" rx="27.23" ry="27.23" transform="translate(131.67 -27.62) rotate(30)"/>
+      <rect class="cls-1" x="6.51" y="118.7" width="234.59" height="49.23" rx="24.61" ry="24.61" transform="translate(88.24 -42.7) rotate(30)"/>
+      <rect class="cls-1" x="29.38" y="41.42" width="207.37" height="41.61" rx="20.8" ry="20.8" transform="translate(48.94 -58.2) rotate(30)"/>
+    </g>
+  </g>
+</svg>

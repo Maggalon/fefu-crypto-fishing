@@ -9,16 +9,29 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.1.2"
+    "@metamask/browser-passworder": "^6.0.0",
+    "@supabase/supabase-js": "^2.47.10",
+    "@telegram-apps/sdk": "^2.11.0",
+    "@twa-dev/sdk": "^8.0.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
+    "lucide-react": "^0.469.0",
+    "next": "15.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hexgrid": "^2.0.1",
+    "react-toastify": "^11.0.2",
+    "react-tooltip": "^5.28.0",
+    "tailwind-merge": "^2.5.5",
+    "validator": "^13.12.0"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/validator": "^13.12.2",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }

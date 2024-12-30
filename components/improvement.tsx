@@ -5,7 +5,9 @@ import { UserData } from "@/lib/types";
 import Image from "next/image";
 import { useContext, useEffect } from "react";
 
-import WebApp from "@twa-dev/sdk";
+import dynamic from 'next/dynamic';
+
+//const WebApp = dynamic(() => import('@twa-dev/sdk'), { ssr: false });
 
 interface ImprovementProps {
     name: string;
@@ -25,9 +27,6 @@ export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementPr
     const setCurrentUser = context?.handleSetCurrentUser;
     const getCurrentUser = context?.getCurrentUser;
 
-    useEffect(() => {
-        WebApp.ready()
-    }, [])
 
     const handleClick = async () => {
         const response = await fetch("/api/shop", {
@@ -44,6 +43,7 @@ export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementPr
         setCurrentUser!(currentUser!.address)
 
         if (data.error) {
+            const WebApp = (await import("@twa-dev/sdk")).default
             WebApp.showAlert("Недостаточно FEFU")
         }
     }

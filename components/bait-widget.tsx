@@ -7,6 +7,7 @@ import { CellContent, ChestCell, UserData } from '@/lib/types';
 import Link from 'next/link';
 import { WalletMinimal } from 'lucide-react';
 import { MainContext } from '@/context/main-context';
+import { GridLoader } from 'react-spinners';
 // import { supabase } from '@/lib/supabase';
 
 interface BaitDisplayProps {
@@ -40,6 +41,8 @@ export default function BaitDisplay({
     const [grid, setGrid] = useState<HexagonObject[]>([])
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [curCellContent, setCurCellContent] = useState<CellContent>({fish: 0, squid: 0, pearl: 0, treasure: 0})
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const baitSystem = useMemo(() => new BaitSystem({
       maxBait,
@@ -113,6 +116,8 @@ export default function BaitDisplay({
     }
 
     const generateGrid = async () => {
+        setIsLoading(true)
+
         const response = await fetch(`/api/chests`)
         const data = await response.json()
         console.log(data);
@@ -135,6 +140,8 @@ export default function BaitDisplay({
         }
 
         setGrid(newGrid)
+
+        setIsLoading(false)
     }
 
     // const handleClick = async () => {
@@ -168,6 +175,7 @@ export default function BaitDisplay({
   
     return (
         <div className='flex flex-col w-full max-w-lg justify-center items-center gap-10 mt-10'>
+            <GridLoader color='white' loading={isLoading} size={30} />
             <HexGrid width={"100%"} height={"100%"}>
                 <Layout size={{ x: 3, y: 3 }} spacing={1.3}>
                     { grid.map(({ id, item, isActive, content }, i) => {

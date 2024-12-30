@@ -3,7 +3,8 @@
 import { MainContext } from "@/context/main-context";
 import { UserData } from "@/lib/types";
 import Image from "next/image";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 interface ImprovementProps {
     name: string;
@@ -22,8 +23,12 @@ export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementPr
     const setCurrentUser = context?.handleSetCurrentUser;
     const getCurrentUser = context?.getCurrentUser;
 
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
 
     const handleClick = async () => {
+        setIsLoading(true)
+
         const response = await fetch("/api/shop", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
@@ -37,10 +42,7 @@ export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementPr
         console.log(data);
         setCurrentUser!(currentUser!.address)
 
-        if (data.error) {
-            const WebApp = (await import("@twa-dev/sdk")).default
-            WebApp.showAlert("Недостаточно FEFU")
-        }
+        setIsLoading(false)
     }
 
     return (
@@ -56,8 +58,11 @@ export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementPr
             <button type="button" 
                     onClick={price <= currentUser!.balance ? handleClick : () => {}}
                     className={`${price > currentUser!.balance && "opacity-70"} text-gray-900 w-28 h-10 bg-white/70 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex justify-center items-center dark:focus:ring-gray-500 my-2`}>
-                <Image width={14} height={14} className='mr-2' src='/button-logo.svg' alt='FEFU Crypto Button Logo' />
-                Купить
+                <BeatLoader loading={isLoading} />
+                {!isLoading && <>
+                    <Image width={14} height={14} className='mr-2' src='/button-logo.svg' alt='FEFU Crypto Button Logo' />
+                    Купить
+                </>}
             </button>
         </div>
     )

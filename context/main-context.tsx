@@ -2,10 +2,7 @@
 
 import { UserData } from '@/lib/types';
 import { createContext, useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 import { TMainContext } from '@/lib/types';
-
-//const WebApp = dynamic(() => import('@twa-dev/sdk'), { ssr: false });
 
 export const MainContext = createContext<TMainContext | undefined>(undefined)
 
@@ -28,7 +25,6 @@ export const MainProvider = ({ children }: Readonly<{children: React.ReactNode}>
 
     useEffect(() => {
         getCurrentUser()
-        //WebApp.ready()
     }, [])
 
     return (

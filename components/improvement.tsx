@@ -5,10 +5,6 @@ import { UserData } from "@/lib/types";
 import Image from "next/image";
 import { useContext, useEffect } from "react";
 
-import dynamic from 'next/dynamic';
-
-//const WebApp = dynamic(() => import('@twa-dev/sdk'), { ssr: false });
-
 interface ImprovementProps {
     name: string;
     imp: string;
@@ -18,7 +14,6 @@ interface ImprovementProps {
     fieldName: string;
 }
 
-//WebApp.ready()
 
 export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementProps) => {
 
@@ -59,8 +54,8 @@ export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementPr
                 </div>
             </div>
             <button type="button" 
-                    onClick={handleClick}
-                    className="text-gray-900 w-28 h-10 bg-white/70 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex justify-center items-center dark:focus:ring-gray-500 my-2">
+                    onClick={price <= currentUser!.balance ? handleClick : () => {}}
+                    className={`${price > currentUser!.balance && "opacity-70"} text-gray-900 w-28 h-10 bg-white/70 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex justify-center items-center dark:focus:ring-gray-500 my-2`}>
                 <Image width={14} height={14} className='mr-2' src='/button-logo.svg' alt='FEFU Crypto Button Logo' />
                 Купить
             </button>

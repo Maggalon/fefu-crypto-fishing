@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo, useContext } from 'react';
 import { BaitSystem } from '../lib/baitSystem';
 import { HexGrid, Layout, Hexagon, GridGenerator, Hex } from 'react-hexgrid';
 import { Modal } from './modal';
 // import { FishingGridGenerator } from '@/lib/gridGenerator';
-import { CellContent, ChestCell } from '@/lib/types';
+import { CellContent, ChestCell, UserData } from '@/lib/types';
+import Link from 'next/link';
+import { WalletMinimal } from 'lucide-react';
+import { MainContext } from '@/context/main-context';
 // import { supabase } from '@/lib/supabase';
 
 interface BaitDisplayProps {
@@ -23,16 +26,22 @@ interface HexagonObject {
 export default function BaitDisplay({
   maxBait=10,
   recoveryRate=1,
-  recoveryInterval=5000,
+  recoveryInterval=1800000,
   onBaitUpdate
 }: BaitDisplayProps) {
+
+    const context = useContext(MainContext);
+    const currentUser = context?.currentUser;
+    const setCurrentUser = context?.handleSetCurrentUser;
+    const getCurrentUser = context?.getCurrentUser;
+
     const [bait, setBait] = useState<number>(0);
     const [timeUntilNext, setTimeUntilNext] = useState<number>(0);
     const [grid, setGrid] = useState<HexagonObject[]>([])
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [curCellContent, setCurCellContent] = useState<CellContent>({fish: 0, squid: 0, pearl: 0, treasure: 0})
 
-    const baitSystem = React.useMemo(() => new BaitSystem({
+    const baitSystem = useMemo(() => new BaitSystem({
       maxBait,
       recoveryRate,
       recoveryInterval
@@ -68,23 +77,18 @@ export default function BaitDisplay({
 
         await fetch(`/api/chests?cellId=${chestId}`, { method: "DELETE" })
         
-        const userData = JSON.parse(sessionStorage.getItem("user")!)
+        //const userData = JSON.parse(sessionStorage.getItem("user")!)
         const response = await fetch("/api/users", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                user_id: userData.id,
+                user_id: currentUser!.id,
                 content: tempGrid[cellId].content
             })
         })
         console.log(await response.json());
         
-        sessionStorage.setItem('user', JSON.stringify({
-            ...userData,
-            fish: userData.fish + tempGrid[cellId].content.fish,
-            squid: userData.squid + tempGrid[cellId].content.squid,
-            pearl: userData.pearl + tempGrid[cellId].content.pearl,
-        }))
+        setCurrentUser!(currentUser!.address)
       }
       
     };
@@ -99,9 +103,9 @@ export default function BaitDisplay({
 
     const generateCellContent = () => {
         const content: CellContent = {
-            fish: Math.random() > 0.3 ? Math.floor(Math.random() * 20 + 1) : 0,
-            squid: Math.random() > 0.5 ? Math.floor(Math.random() * 10 + 1) : 0,
-            pearl: Math.random() > 0.8 ? Math.floor(Math.random() * 3 + 1) : 0,
+            fish: Math.random() > 0.3 ? Math.floor((Math.random() * 20 + 1) * currentUser!.extraction_multiplier) : 0,
+            squid: Math.random() > 0.5 ? Math.floor((Math.random() * 10 + 1) * currentUser!.extraction_multiplier) : 0,
+            pearl: Math.random() > 0.8 ? Math.floor((Math.random() * 3 + 1) * currentUser!.extraction_multiplier) : 0,
             treasure: 0
         }
 
@@ -150,6 +154,17 @@ export default function BaitDisplay({
     //     console.error('Error initializing grid:', error);
     //   }
     // }
+
+    if (!currentUser) {
+        return (
+            <div className='w-full mt-10 max-w-lg flex flex-col gap-5 justify-center items-center text-white'>
+                <div>Подключи кошелек, чтобы начать рыбалку</div>
+                <Link href="/profile">
+                    <button className='flex items-center gap-2 bg-[#2980b9] p-2 rounded-lg'><WalletMinimal />Подключить</button>
+                </Link>
+            </div>
+        )
+    }
   
     return (
         <div className='flex flex-col w-full max-w-lg justify-center items-center gap-10 mt-10'>
@@ -174,9 +189,9 @@ export default function BaitDisplay({
                 <div className="w-full border-2 rounded-full h-3">
                     <div className="bg-white/80 h-full rounded-full" style={{ width: `${bait/maxBait*100}%` }}></div>
                 </div>
-                <div className="text-white text-sm flex">
+                <div className="text-white text-sm flex gap-1">
                     <div>{bait}/{maxBait}</div> 
-                    {timeUntilNext > 0 && bait < maxBait && <div>({Math.ceil(timeUntilNext / 1000)}s)</div> }
+                    {timeUntilNext > 0 && bait < maxBait && <div>({Math.floor(timeUntilNext / 60000)}:{Math.floor(timeUntilNext % 60000 / 1000)})</div> }
                 </div>
             </div>
             {/* <button className='bg-white mt-4' onClick={handleClick}>Generate grid</button> */}

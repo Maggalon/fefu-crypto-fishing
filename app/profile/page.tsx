@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
 
 import validator from 'validator'
@@ -9,11 +9,14 @@ import { UserData } from '@/lib/types'
 
 import Image from 'next/image'
 import ReferralButtons from '@/components/referral-buttons'
+import { MainContext } from '@/context/main-context'
 
 const Profile = () => {
 
-    //const {currentAccount, connectWallet, chainId, balance, createWallet, restoreWallet} = useContext(FefuCryptoContext)
-    const [currentUser, setCurrentUser] = useState<UserData>()
+    const context = useContext(MainContext);
+    const currentUser = context?.currentUser;
+    const setCurrentUser = context?.handleSetCurrentUser;
+    const getCurrentUser = context?.getCurrentUser;
 
     const [password, setPassword] = useState("")
     const [passwordError, setPasswordError] = useState(false)
@@ -33,25 +36,17 @@ const Profile = () => {
     const [newRefCode, setNewRefCode] = useState<string>("")
     const [newRefCodeError, setNewRefCodeError] = useState<boolean>(false)
 
-    useEffect(() => {
-        const userData = JSON.parse(sessionStorage.getItem("user")!)
-        if (userData) {
-            setCurrentUser(userData)
-        }
-    }, [])
+    // useEffect(() => {
+    //     const userData = JSON.parse(sessionStorage.getItem("user")!)
+    //     if (userData) {
+    //         setCurrentUser(userData)
+    //     }
+    // }, [])
 
     const connectWallet = async (password: string) => {
         try {
           const result = await getWallet(password) as { publicKey: string; privateKey: string; address: string; }
-          //setCurrentAccount(result!.address)          
-
-          const response = await fetch(`/api/users?address=${result.address}`)
-          const userData = await response.json()
-          console.log(userData.results);
-          
-          setCurrentUser(userData.results[0])
-          sessionStorage.setItem('user', JSON.stringify(userData.results[0]))
-          
+          setCurrentUser!(result.address)
         } catch (e) {
           console.log(e);
           throw Error;
@@ -313,42 +308,42 @@ const Profile = () => {
         return (
             <>
             <div className="w-full max-w-lg bg-white/10 custom-blur overflow-hidden shadow-2xl rounded-2xl">
-            <div className="px-4 py-5 sm:px-6">
-                <h3 className="text-xl leading-6 font-medium text-white">
-                    Профиль пользователя
-                </h3>
-            </div>
-            <div className="px-4 py-5 sm:p-0">
-                <dl>
-                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="font-medium text-white/70">
-                            Адрес аккаунта
-                        </dt>
-                        <dd className="mt-1 text-white font-medium sm:mt-0 sm:col-span-2">
-                            {currentUser.address.slice(0,10)}...{currentUser.address.slice(-4)}
-                        </dd>
-                    </div>
-                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="font-medium text-white/70">
-                            Баланс
-                        </dt>
-                        <dd className="mt-1 text-white font-medium sm:mt-0 sm:col-span-2">
-                            {`${currentUser.balance} FEFU`}
-                        </dd>
-                    </div>
-                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="font-medium text-white/70">
-                            Склад
-                        </dt>
-                        <dd className="mt-1 text-white font-medium sm:mt-0 sm:col-span-2 flex flex-col">
-                            <div className='flex items-center gap-2'><Image height={18} width={18} src='/fish.svg' alt='Fish' />{currentUser.fish}</div>
-                            <div className='flex items-center gap-2'><Image height={18} width={18} src='/squid.svg' alt='Squid' />{currentUser.squid}</div>
-                            <div className='flex items-center gap-2'><Image height={18} width={18} src='/pearl.svg' alt='Pearl' />{currentUser.pearl}</div>
-                        </dd>
-                    </div>
-                </dl>
-            </div>
-            <ReferralButtons referralCode={currentUser.referral_code} />
+                <div className="px-4 py-5 sm:px-6">
+                    <h3 className="text-xl leading-6 font-medium text-white">
+                        Профиль пользователя
+                    </h3>
+                </div>
+                <div className="px-4 py-5 sm:p-0">
+                    <dl>
+                        <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt className="font-medium text-white/70">
+                                Адрес аккаунта
+                            </dt>
+                            <dd className="mt-1 text-white font-medium sm:mt-0 sm:col-span-2">
+                                {currentUser.address.slice(0,10)}...{currentUser.address.slice(-4)}
+                            </dd>
+                        </div>
+                        <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt className="font-medium text-white/70">
+                                Баланс
+                            </dt>
+                            <dd className="mt-1 text-white font-medium sm:mt-0 sm:col-span-2">
+                                {`${currentUser.balance} FEFU`}
+                            </dd>
+                        </div>
+                        <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt className="font-medium text-white/70">
+                                Склад
+                            </dt>
+                            <dd className="mt-1 text-white font-medium sm:mt-0 sm:col-span-2 flex flex-col">
+                                <div className='flex items-center gap-2'><Image height={18} width={18} src='/fish.svg' alt='Fish' />{currentUser.fish}</div>
+                                <div className='flex items-center gap-2'><Image height={18} width={18} src='/squid.svg' alt='Squid' />{currentUser.squid}</div>
+                                <div className='flex items-center gap-2'><Image height={18} width={18} src='/pearl.svg' alt='Pearl' />{currentUser.pearl}</div>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+                <ReferralButtons referralCode={currentUser.referral_code} />
             </div>
             </>
         )

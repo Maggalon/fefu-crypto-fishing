@@ -36,3 +36,9 @@ export interface UserData {
     extraction_multiplier: number;
     recovery_multiplier: number;
 }
+
+export interface TMainContext {
+    currentUser: UserData | undefined;
+    handleSetCurrentUser: (address: string) => void;
+    getCurrentUser: () => void;
+}

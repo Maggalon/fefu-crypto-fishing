@@ -16,6 +16,8 @@ interface ImprovementProps {
     fieldName: string;
 }
 
+WebApp.ready()
+
 export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementProps) => {
 
     const context = useContext(MainContext);

@@ -3,7 +3,7 @@
 import { MainContext } from "@/context/main-context";
 import { UserData } from "@/lib/types";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import WebApp from "@twa-dev/sdk";
 
@@ -16,7 +16,7 @@ interface ImprovementProps {
     fieldName: string;
 }
 
-WebApp.ready()
+//WebApp.ready()
 
 export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementProps) => {
 
@@ -24,6 +24,10 @@ export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementPr
     const currentUser = context?.currentUser;
     const setCurrentUser = context?.handleSetCurrentUser;
     const getCurrentUser = context?.getCurrentUser;
+
+    useEffect(() => {
+        WebApp.ready()
+    }, [])
 
     const handleClick = async () => {
         const response = await fetch("/api/shop", {

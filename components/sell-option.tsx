@@ -5,17 +5,18 @@ import { MouseEventHandler } from "react";
 import { BeatLoader } from "react-spinners";
 
 interface SellOptionProps {
+    name: string;
     quantity: number;
     price: number;
     handleSell: MouseEventHandler<HTMLButtonElement>;
     isLoading: boolean;
 }
 
-export const SellOption = ({ quantity, price, handleSell, isLoading }: SellOptionProps) => {
+export const SellOption = ({ name, quantity, price, handleSell, isLoading }: SellOptionProps) => {
 
     return (
         <div className="w-full grid grid-cols-3 items-center">
-            <div className="font-medium text-white/70 col-span-3">Рыба</div>
+            <div className="font-medium text-white/70 col-span-3">{name}</div>
             <div className="font-medium text-white/70 text-sm ">{quantity} шт.</div>
             <div className="text-white text-sm">{price} FEFU/шт</div>
             <button type="button" 

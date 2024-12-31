@@ -223,9 +223,9 @@ const Profile = () => {
                                 value={newWalletAddress}
                                 className="pl-5 bg-white/20 custom-blur overflow-hidden shadow-2xl text-white/70 text-md font-semibold rounded-full focus:outline-none focus:border-blue-500 block w-full p-2.5" />
                         </div>
+                        <label htmlFor="seedPhrase" className="block mb-2 text-sm font-medium text-white dark:text-white">Seed-фраза (ВАЖНО: сохраните фразу в надежном месте. Если потеряете пароль или захотите подключиться с другого устройства, получить доступ к аккаунту можно будет ТОЛЬКО по ней!)</label>
                         <div className="w-full max-w-lg mb-6 pl-5 bg-white/20 custom-blur overflow-hidden shadow-2xl text-white/70 text-md font-semibold rounded-xl focus:outline-none focus:border-blue-500 block p-2.5">
                             <div className="">
-                                <label htmlFor="seedPhrase" className="sr-only">Seed-фраза (ВАЖНО: сохраните фразу в надежном месте. При потере пароля восстановить аккаунт можно будет только по ней!)</label>
                                 <textarea id="seedPhrase" 
                                           rows={4} 
                                           value={newWalletMnemonic}
@@ -328,7 +328,7 @@ const Profile = () => {
                                 Баланс
                             </dt>
                             <dd className="mt-1 text-white font-medium sm:mt-0 sm:col-span-2">
-                                {`${currentUser.balance} FEFU`}
+                                {`${currentUser.balance || 0} FEFU`}
                             </dd>
                         </div>
                         <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

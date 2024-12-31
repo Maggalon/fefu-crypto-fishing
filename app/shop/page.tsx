@@ -72,27 +72,30 @@ export default function Shop() {
         <div className="flex flex-col items-center w-full max-w-lg">
             <h1 className="text-2xl text-white font-bold">МАГАЗИН</h1>
             <div className="w-full py-3 px-5 my-4 flex flex-col items-center justify-around bg-white/10 custom-blur shadow-2xl rounded-lg">
-                <SellOption quantity={currentUser!.fish}
+                <SellOption name="Рыба"
+                            quantity={currentUser!.fish}
                             price={PRICES.fish}
                             handleSell={() => handleSell("fish")}
                             isLoading={isLoading.fish} />
-                <SellOption quantity={currentUser!.squid}
+                <SellOption name="Кальмар"
+                            quantity={currentUser!.squid}
                             price={PRICES.squid}
                             handleSell={() => handleSell("squid")}
                             isLoading={isLoading.squid} />
-                <SellOption quantity={currentUser!.pearl}
+                <SellOption name="Жемчуг"
+                            quantity={currentUser!.pearl}
                             price={PRICES.pearl}
                             handleSell={() => handleSell("pearl")}
                             isLoading={isLoading.pearl} />
             </div>
             <Improvement name="Улучшить рыболовные снасти"
                          imp="+ 0.1 к множителю улова"
-                         price={currentUser ? Math.floor(2**((currentUser.extraction_multiplier - 1) / 0.1) * 1000) : 1000}
+                         price={currentUser ? Math.ceil(2**((currentUser.extraction_multiplier - 1) / 0.1) * 1000) : 1000}
                          icon="/fishing-rod.svg"
                          fieldName="extraction_multiplier" />
             <Improvement name="Улучшить приманку"
                          imp="- 1 мин. к восстановлению наживки"
-                         price={currentUser ? Math.floor(2**(currentUser.recovery_multiplier - 1)) : 1000}
+                         price={currentUser ? Math.ceil(2**(currentUser.recovery_multiplier - 1)) * 1000 : 1000}
                          icon="/lure.svg"
                          fieldName="recovery_multiplier" />
         </div>

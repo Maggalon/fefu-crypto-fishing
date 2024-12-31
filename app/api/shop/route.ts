@@ -44,8 +44,8 @@ export async function POST(req: NextRequest) {
                 const { error } = await supabase
                     .from("users")
                     .update({ 
-                        recovery_multiplier: userData.extraction_multiplier + 1,
-                        balance: userData.balance - Math.floor(2**(userData.recovery_multiplier - 1))
+                        recovery_multiplier: userData.recovery_multiplier + 1,
+                        balance: userData.balance - Math.floor(2**(userData.recovery_multiplier - 1)) * 1000
                     })
                     .eq("address", address)
 

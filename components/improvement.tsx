@@ -1,7 +1,7 @@
 "use client"
 
 import { MainContext } from "@/context/main-context";
-import { UserData } from "@/lib/types";
+import { BaitData, UserData } from "@/lib/types";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
@@ -39,8 +39,17 @@ export const Improvement = ({ name, imp, price, icon, fieldName }: ImprovementPr
             })
         })
         const data = await response.json()
-        console.log(data);
         setCurrentUser!(currentUser!.address)
+
+        if (fieldName === "recovery_multiplier") {
+            const rawBaitData = localStorage.getItem("userBait")
+            if (rawBaitData) {
+                const baitData = JSON.parse(rawBaitData) as BaitData
+
+                localStorage.setItem("userData", JSON.stringify({...baitData, lastUpdate: baitData.lastUpdate + 60*1000}))
+            }    
+        }
+        
 
         setIsLoading(false)
     }

@@ -44,7 +44,7 @@ const _storeWallet = async (_privateKey: string, _publicKey: string, _address: s
     encrypt(password, accountInfo)
               .then(blob => {
                 localStorage.setItem('accountInfo', blob)
-                console.log("Account data successfully stored to local storage");
+                //console.log("Account data successfully stored to local storage");
               })
 }
 

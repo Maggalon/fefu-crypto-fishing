@@ -2,13 +2,11 @@ import { useState, useEffect, useCallback, useMemo, useContext } from 'react';
 import { BaitSystem } from '../lib/baitSystem';
 import { HexGrid, Layout, Hexagon, GridGenerator, Hex } from 'react-hexgrid';
 import { Modal } from './modal';
-// import { FishingGridGenerator } from '@/lib/gridGenerator';
-import { CellContent, ChestCell, UserData } from '@/lib/types';
+import { CellContent, ChestCell } from '@/lib/types';
 import Link from 'next/link';
 import { WalletMinimal } from 'lucide-react';
 import { MainContext } from '@/context/main-context';
 import { GridLoader } from 'react-spinners';
-// import { supabase } from '@/lib/supabase';
 
 interface BaitDisplayProps {
   maxBait?: number;
@@ -89,7 +87,6 @@ export default function BaitDisplay({
                 content: tempGrid[cellId].content
             })
         })
-        console.log(await response.json());
         
         setCurrentUser!(currentUser!.address)
       }
@@ -119,9 +116,7 @@ export default function BaitDisplay({
         setIsLoading(true)
 
         const response = await fetch(`/api/chests`)
-        const data = await response.json()
-        console.log(data);
-        
+        const data = await response.json()        
 
         const rawGrid = GridGenerator.hexagon(7);  
         const newGrid: HexagonObject[] = []

@@ -24,6 +24,26 @@ export async function POST(req: NextRequest) {
         const body = await req.json()
         const { user_id, content } = body
 
+        if (content.treasure) {
+            const { data: userData, error: userError } = await supabase
+                .from("users")
+                .select("*")
+                .eq("id", user_id)
+                .single()
+
+            if (userError) return NextResponse.json({ error: userError.message, status: 400 })
+            
+            const { error: increaseBalanceError } = await supabase
+                .from("users")
+                .update({
+                    balance: userData.balance + content.treasure
+                })
+                .eq("id", user_id)
+
+            if (increaseBalanceError) return NextResponse.json({ error: increaseBalanceError.message, status: 400 })
+            return NextResponse.json({ success: true })
+        }
+
         const { data: fish_res, error: fish_error } = await supabase.rpc('increment_fish', {
             user_id: user_id,
             catched_fish: content.fish

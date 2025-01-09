@@ -1,11 +1,10 @@
 "use client"
 
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
 
 import validator from 'validator'
 import { createWallet, restoreWallet, getWallet } from '@/lib/walletBrain'
-import { UserData } from '@/lib/types'
 
 import Image from 'next/image'
 import ReferralButtons from '@/components/referral-buttons'
@@ -48,7 +47,7 @@ const Profile = () => {
           const result = await getWallet(password) as { publicKey: string; privateKey: string; address: string; }
           setCurrentUser!(result.address)
         } catch (e) {
-          console.log(e);
+          //console.log(e);
           throw Error;
         }
       }
@@ -57,7 +56,7 @@ const Profile = () => {
         try {
             await connectWallet(password)            
         } catch (e) {
-            console.log(e);
+            //console.log(e);
             setPasswordError(true)
         }
     }
@@ -78,7 +77,7 @@ const Profile = () => {
             }, 500)
             
         } catch(e) {
-            console.log(e);
+            //console.log(e);
             setMnemonicError(true)
         }
     }
@@ -103,7 +102,6 @@ const Profile = () => {
                     })
                 })
                 const data = await response.json()
-                console.log(data);
                 
                 if (!data) {
                     setNewRefCodeError(true)
@@ -121,9 +119,7 @@ const Profile = () => {
                 })
             })
 
-            const data = await response.json()
-            console.log(data);
-            
+            const data = await response.json()            
             
             setNewWalletMnemonic(mnemonic)
             setNewWalletAddress(readableAddress)
@@ -132,7 +128,7 @@ const Profile = () => {
 
             
         } catch(e) {
-            console.log(e);
+            //console.log(e);
             
         }
     }

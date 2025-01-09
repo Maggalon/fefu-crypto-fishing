@@ -71,10 +71,12 @@ export class BaitSystem {
       if (currentBait < cost) {
         return false;
       }
+
+      const data = this.loadBaitData()
   
       this.saveBaitData({
         bait: currentBait - cost,
-        lastUpdate: Date.now()
+        lastUpdate: data.lastUpdate
       });
       return true;
     }

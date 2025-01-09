@@ -13,7 +13,6 @@ export const MainProvider = ({ children }: Readonly<{children: React.ReactNode}>
     const handleSetCurrentUser = async (address: string) => {
         const response = await fetch(`/api/users?address=${address}`)
         const userData = await response.json()
-        console.log(userData.results);
         
         setCurrentUser(userData.results[0])
         sessionStorage.setItem('user', JSON.stringify(userData.results[0]))
